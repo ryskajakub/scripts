@@ -20,9 +20,10 @@ deleteBranch branch = run_ "git" ["branch", "-d", branch]
 deleteMerged :: Sh ()
 deleteMerged = do
 	merged <- run "git" ["branch", "--merged"]
-	nonMasterLines <- return $ filter (\x -> not $ isMaster x) (T.lines merged)
-	nonMasterBranches <- return $ fmap (\x -> T.strip x) nonMasterLines
-	sequence_ $ fmap deleteBranch nonMasterBranches
+	sequence_ $ let
+		nonMasterLines = filter (not . isMaster) (T.lines merged)
+		nonMasterBranches = fmap (T.strip) nonMasterLines
+		in fmap deleteBranch nonMasterBranches
 
 main :: IO ()
 main = shelly $ do
