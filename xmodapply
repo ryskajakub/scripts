@@ -1,0 +1,5 @@
+#!/bin/bash
+
+setxkbmap -verbose us -variant altgr-intl
+xmodmap -verbose /home/coub/.myxmodmap
+
