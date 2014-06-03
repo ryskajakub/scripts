@@ -10,5 +10,5 @@ default (T.Text)
 
 main :: IO ()
 main = shelly $ do
-	writefile "/home/coub/git/scripts/touch" "A"
+  writefile "/home/coub/git/scripts/touch" "A"
 
