@@ -31,4 +31,3 @@ main = shelly $ do
   if T.isSuffixOf "master" (head $ T.lines whereIAm :: T.Text)
   then deleteMerged
   else echo "You must be on the master branch!"
-	
