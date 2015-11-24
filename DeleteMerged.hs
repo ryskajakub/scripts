@@ -1,5 +1,5 @@
-#!/usr/bin/env runhaskell
-
+#!/usr/bin/env stack
+-- stack --resolver lts-3.13 --install-ghc runghc --package shelly
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ExtendedDefaultRules #-}
 {-# OPTIONS_GHC -fno-warn-type-defaults #-}
