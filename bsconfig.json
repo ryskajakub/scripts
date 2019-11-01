@@ -1,0 +1,25 @@
+{
+  "name": "scripts",
+  "version": "0.1.0",
+  "sources": {
+    "dir" : "src",
+    "subdirs" : true
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": false
+  },
+  "suffix": ".bs.js",
+  "bs-dependencies": [
+    "bs-puppeteer",
+    "bs-opam-packages"
+  ],
+  "warnings": {
+    "error" : "+101"
+  },
+  "refmt": 3,
+  "ppx-flags": ["bs-opam-packages/ppx/ppx_let"],
+  "warnings" : {
+    "number": "-40-6+7+27+32..39+44+45"
+  }
+}

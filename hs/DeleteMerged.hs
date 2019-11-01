@@ -9,7 +9,7 @@ import Data.Monoid
 default (T.Text)
 
 isMaster :: T.Text -> Bool
-isMaster line = T.isInfixOf (T.pack "master") line
+isMaster line = T.isInfixOf (T.pack "dev") line
 
 isCurrent :: T.Text -> Bool
 isCurrent line = T.isPrefixOf (T.pack "*") line
@@ -28,6 +28,6 @@ deleteMerged = do
 main :: IO ()
 main = shelly $ do
   whereIAm <- run "git" ["status"]
-  if T.isSuffixOf "master" (head $ T.lines whereIAm :: T.Text)
+  if T.isSuffixOf "dev" (head $ T.lines whereIAm :: T.Text)
   then deleteMerged
-  else echo "You must be on the master branch!"
+  else echo "You must be on the dev branch!"

@@ -1,0 +1,21 @@
+{
+  "name": "scripts",
+  "version": "0.1.0",
+  "scripts": {
+    "clean": "bsb -clean-world",
+    "build": "bsb -make-world",
+    "watch": "bsb -make-world -w"
+  },
+  "keywords": [
+    "BuckleScript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bs-platform": "^5.0.6",
+    "bs-puppeteer": "^0.12.0",
+    "bs-webapi": "^0.15.5",
+    "puppeteer": "^2.0.0",
+    "bs-opam-packages": "0.1.1"
+  }
+}
