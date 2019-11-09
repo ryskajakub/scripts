@@ -1,9 +1,16 @@
 {
   "name": "scripts",
   "version": "0.1.0",
-  "sources": {
+  "sources": [{
     "dir" : "src",
     "subdirs" : true
+  }, {
+    "dir": "test",
+    "type": "dev",
+    "subdirs": true
+  }],
+  "reason": {
+    "react-jsx": 3
   },
   "package-specs": {
     "module": "commonjs",
@@ -12,7 +19,12 @@
   "suffix": ".bs.js",
   "bs-dependencies": [
     "bs-puppeteer",
-    "bs-opam-packages"
+    "bs-opam-packages",
+    "reason-react",
+    "@ahrefs/bs-reactstrap",
+    "bs-fetch",
+    "bs-express",
+    "bs-mongodb"
   ],
   "warnings": {
     "error" : "+101"

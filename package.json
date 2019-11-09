@@ -4,7 +4,8 @@
   "scripts": {
     "clean": "bsb -clean-world",
     "build": "bsb -make-world",
-    "watch": "bsb -make-world -w"
+    "watch": "bsb -make-world -w",
+    "webpack": "webpack -w"
   },
   "keywords": [
     "BuckleScript"
@@ -12,10 +13,35 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@ahrefs/bs-reactstrap": "^1.0.3",
+    "bootstrap": "^4.3.1",
+    "bs-express": "^1.0.0",
+    "bs-fetch": "^0.5.0",
+    "bs-mongodb": "^0.2.0",
+    "bs-opam-packages": "file:../bs-opam-packages",
     "bs-platform": "^5.0.6",
     "bs-puppeteer": "^0.12.0",
-    "bs-webapi": "^0.15.5",
+    "html-webpack-plugin": "^3.2.0",
+    "nodemon": "^1.19.4",
     "puppeteer": "^2.0.0",
-    "bs-opam-packages": "0.1.1"
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "reason-react": ">=0.7.0",
+    "style-loader": "^1.0.0",
+    "webpack": "^4.0.1",
+    "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.1.8"
+  },
+  "bundledDependencies": [
+    "bs-opam-packages",
+    "bs-platform",
+    "bs-puppeteer",
+    "puppeteer"
+  ],
+  "files": [
+    "lib/js"
+  ],
+  "devDependencies": {
+    "css-loader": "^3.2.0"
   }
 }
