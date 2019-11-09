@@ -19,6 +19,8 @@ let modeFromBoolean = function
   | true -> MakeReservation
   | false -> CancelReservation
 
+external asString: < .. > Js.t -> string = "%identity"
+
 let doReservation date (mode: mode) name password: bool Js.Promise.t = 
 
   let makeReservationButtonClass, cancelReservationButtonClass = "btn-success", "btn-info" in
@@ -29,13 +31,14 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
     | CancelReservation -> false, cancelReservationButtonClass, makeReservationButtonClass 
   in
 
-  let doc = [%bs.obj {
+  let mkDoc (reservation: string option) = [%bs.obj {
     _id = Days.printDate date ;
     reserved = reserved ;
     performed = true ;
+    location = reservation |> (function Some s -> Some (Helpers.extractLocation s) | None -> None) |> Js.Undefined.fromOption
   }] in
 
-  let maybeReservation (): bool Js.Promise.t = 
+  let maybeReservation (): (string option * bool) Js.Promise.t = 
     let dayOfWeek = dayToBook date in
     let%bind browser = Puppeteer.launch ~options:(Puppeteer.makeLaunchOptions ~headless:false ()) () in
     let%bind page = Browser.newPage browser in
@@ -55,17 +58,25 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
     let buttonXPath = "//button[contains(@class, '" ^ firstButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
     let%bind reserveButton = FrameBase.waitForXPath page ~xpath:buttonXPath () in
     let%bind _ = ElementHandle.click reserveButton () in
-    let reservedButtonXPath = "//button[contains(@class, '" ^ secondButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
-    let%map _ = FrameBase.waitForXPath page ~xpath:reservedButtonXPath () in
-    Js.log2 "reservation successful for date: " date;
-    true 
+    match mode with
+      | MakeReservation ->
+        let reservedButtonXPathText = "//button[contains(@class, 'btn-info')]/strong[contains(@class, 'inButtonText')]" in
+        let%bind reserveButton = FrameBase.waitForXPath page ~xpath:reservedButtonXPathText () in
+        let%bind textContent = ElementHandle.getProperty reserveButton ~propertyName:"textContent" in
+        let%map jsonValue = ElementHandle.jsonValue textContent in
+        let reservation = asString jsonValue in
+        Some reservation, true 
+      | CancelReservation ->
+        let reservedButtonXPath = "//button[contains(@class, '" ^ secondButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
+        let%map _ = FrameBase.waitForXPath page ~xpath:reservedButtonXPath () in
+        None, true
   in 
 
   let promise = 
-    (* let%bind result = maybeReservation () in *)
-    let result = true in
-    Js.log2 "Performing..." doc ;
+    let%bind (reservation, result) = maybeReservation () in
+    let doc = mkDoc reservation in
     let%map _ = Database.upsertReservation doc in
+    Js.log2 "Performing..." doc ;
     result
   in
   

@@ -22,9 +22,10 @@ let reservationsFromNow days: Shared.dayReservation array =
     let freshDate = Js.Date.fromFloat time in
     let _ = Js.Date.setDate freshDate (f +. dayOfMonth) in
     [%bs.obj { 
-      _id = Days.printDate freshDate;
-      reserved = true;
-      performed = false;
+      _id = Days.printDate freshDate ;
+      reserved = true ;
+      performed = false ;
+      location = Js.Undefined.empty ;
     }]
   )
 
@@ -112,7 +113,7 @@ let handle mkNow _next req res: Express.complete Js.Promise.t =
     | _ -> failwith "can't handle this"
 
 let () =
-  let mkNow () = Days.plusDays (Js.Date.make ()) 1 in
+  let mkNow () = Days.plusDays (Js.Date.make ()) 0 in
   let middleWare = Express.PromiseMiddleware.from @@ handle mkNow in
   let json = Express.Middleware.json () in
   Express.App.useOnPathWithMany app ~path:"/" [|json; middleWare |]

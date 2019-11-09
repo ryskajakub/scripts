@@ -4,10 +4,6 @@
   "sources": [{
     "dir" : "src",
     "subdirs" : true
-  }, {
-    "dir": "test",
-    "type": "dev",
-    "subdirs": true
   }],
   "reason": {
     "react-jsx": 3

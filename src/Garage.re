@@ -32,7 +32,13 @@ let make = () => {
           <Col className="offset-lg-3" lg="6">
             <p>
               <Button onClick={onClick(d)} block=true color={color} size="lg"> 
-                (d##_id |> Days.readDate |> Js.Option.getExn |> Days.ymdAsDate |> Days.format |> Helpers.performedString(d##performed) |> ReasonReact.string) 
+                <span>
+                  (d##_id |> Days.readDate |> Js.Option.getExn |> Days.ymdAsDate |> Days.format |> ReasonReact.string) 
+                </span>
+                <br/>
+                <strong>
+                  (Helpers.mkLocation(d##location) |> ReasonReact.string)
+                </strong>
                </Button>
             </p>
           </Col>

@@ -15,3 +15,7 @@ let performedString performed str =
   if performed
   then "Performed >> " ^ str ^ " << Performed"
   else str
+
+let extractLocation str: string = Js.String.split " " str |. Array.get 1
+
+let mkLocation: string Js.Undefined.t -> string = fun s -> Js.undefinedToOption s |> Js.Option.map (fun [@bs] a -> "Location: " ^ a) |> Js.Option.getWithDefault ""
