@@ -37,7 +37,8 @@
     "bs-express",
     "bs-mongodb",
     "bs-platform",
-    "bs-puppeteer"
+    "bs-puppeteer",
+    "puppeteer"
   ],
   "files": [
     "lib/js",

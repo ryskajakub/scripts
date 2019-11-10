@@ -1,6 +1,6 @@
 server {
   listen 80;
-  server_name ryskajakub.name;
+  server_name mygarage.ryskajakub.name;
   location /api/ {
     proxy_pass http://localhost:6101/;
   }
