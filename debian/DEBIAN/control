@@ -1,0 +1,9 @@
+Package: scripts
+Version: 1.0.0-1
+Section: base
+Priority: optional
+Architecture: i386
+Depends: mongo (>= 3.6.3), nginx (>= 1.14.0), systemd (>= 237), nodejs (>= 8.10.0)
+Maintainer: Jakub Ryška <ryskajakub@seznam.cz>
+Description: Hello World
+ Garage app for reserving garage space

@@ -1,0 +1,9 @@
+server {
+  listen 80;
+  server_name ryskajakub.name;
+  location /api/ {
+    proxy_pass http://localhost:6101/;
+  }
+  root /var/www/scripts/package/build;
+  expires -1;
+}

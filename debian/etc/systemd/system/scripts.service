@@ -1,0 +1,9 @@
+[Unit]
+Description=Scripts server
+
+[Service]
+Type=simple
+ExecStart=node /var/www/scripts/package/lib/js/src/Server.bs.js
+
+[Install]
+WantedBy=multi-user.target
