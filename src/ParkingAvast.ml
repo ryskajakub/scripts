@@ -63,7 +63,7 @@ let doReservation date (mode: mode): bool Js.Promise.t =
     let%bind _ = ElementHandle.click passwordNext () in
     let dtb = dayOfWeek in
     let buttonXPath = "//button[contains(@class, '" ^ firstButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
-    let%bind reserveButton = FrameBase.waitForXPath page ~xpath:buttonXPath ~options:[%bs.obj { visible = Js.Nullable.undefined ; hidden = Js.Nullable.undefined ; timeout = Js.Nullable.return 60.0 }] () in
+    let%bind reserveButton = FrameBase.waitForXPath page ~xpath:buttonXPath ~options:[%bs.obj { visible = Js.Nullable.undefined ; hidden = Js.Nullable.undefined ; timeout = Js.Nullable.return 60000.0 }] () in
     let%bind _ = ElementHandle.click reserveButton () in
     let%bind result = match mode with
       | MakeReservation ->
