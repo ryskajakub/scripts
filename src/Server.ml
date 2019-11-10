@@ -1,10 +1,6 @@
 open Bs_ppx_let.Promise
 
-let name, password = 
-  let default = Config.config##default in
-  default##name, default##password
-
-let doReservation jsDate mode = ParkingAvast.doReservation jsDate mode name password
+let doReservation jsDate mode = ParkingAvast.doReservation jsDate mode
 
 let app = Express.App.make()
 

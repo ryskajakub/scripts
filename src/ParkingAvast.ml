@@ -21,7 +21,11 @@ let modeFromBoolean = function
 
 external asString: < .. > Js.t -> string = "%identity"
 
-let doReservation date (mode: mode) name password: bool Js.Promise.t = 
+let name, password = 
+  let default = Config.config##default in
+  default##name, default##password
+
+let doReservation date (mode: mode): bool Js.Promise.t = 
 
   let makeReservationButtonClass, cancelReservationButtonClass = "btn-success", "btn-info" in
 
@@ -42,6 +46,7 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
     let dayOfWeek = dayToBook date in
     let%bind browser = Puppeteer.launch ~options:(Puppeteer.makeLaunchOptions ~headless:true ()) () in
     let%bind page = Browser.newPage browser in
+    let%bind _ = Page.setUserAgent page "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3205.0 Safari/537.36" in
     let%bind _ = FrameBase.goto page "https://parking.avast.com" () in
     let%bind signInClick = FrameBase.waitForXPath page "//a[contains(@class, 'signInButton')]" () in
     let%bind _ = ElementHandle.click signInClick () in
@@ -84,3 +89,5 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
   in
   
   promise |> Js.Promise.catch (fun e -> Js.log e ; Js.Promise.resolve false)
+
+let () = ignore @@ doReservation (Js.Date.make ()) MakeReservation
