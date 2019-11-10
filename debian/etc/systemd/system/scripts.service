@@ -3,7 +3,9 @@ Description=Scripts server
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/node /var/www/scripts/package/lib/js/src/Server.bs.js "" ""
+ExecStart=/usr/bin/node /var/www/scripts/package/lib/js/src/Server.bs.js
+User=www-data
+Group=www-data
 
 [Install]
 WantedBy=multi-user.target

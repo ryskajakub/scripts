@@ -40,7 +40,7 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
 
   let maybeReservation (): (string option * bool) Js.Promise.t = 
     let dayOfWeek = dayToBook date in
-    let%bind browser = Puppeteer.launch ~options:(Puppeteer.makeLaunchOptions ~headless:false ()) () in
+    let%bind browser = Puppeteer.launch ~options:(Puppeteer.makeLaunchOptions ~headless:true ()) () in
     let%bind page = Browser.newPage browser in
     let%bind _ = FrameBase.goto page "https://parking.avast.com" () in
     let%bind signInClick = FrameBase.waitForXPath page "//a[contains(@class, 'signInButton')]" () in
@@ -58,9 +58,9 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
     let buttonXPath = "//button[contains(@class, '" ^ firstButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
     let%bind reserveButton = FrameBase.waitForXPath page ~xpath:buttonXPath () in
     let%bind _ = ElementHandle.click reserveButton () in
-    match mode with
+    let%bind result = match mode with
       | MakeReservation ->
-        let reservedButtonXPathText = "//button[contains(@class, 'btn-info')]/strong[contains(@class, 'inButtonText')]" in
+        let reservedButtonXPathText = "//button[contains(@class, '" ^ secondButtonClass ^ "')]/strong[contains(@class, 'inButtonText')]" in
         let%bind reserveButton = FrameBase.waitForXPath page ~xpath:reservedButtonXPathText () in
         let%bind textContent = ElementHandle.getProperty reserveButton ~propertyName:"textContent" in
         let%map jsonValue = ElementHandle.jsonValue textContent in
@@ -70,6 +70,9 @@ let doReservation date (mode: mode) name password: bool Js.Promise.t =
         let reservedButtonXPath = "//button[contains(@class, '" ^ secondButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
         let%map _ = FrameBase.waitForXPath page ~xpath:reservedButtonXPath () in
         None, true
+    in
+    let%map _ = Browser.close browser in
+    result
   in 
 
   let promise = 

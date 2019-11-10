@@ -1,10 +1,8 @@
 open Bs_ppx_let.Promise
 
 let name, password = 
-  let args = Array.get Node.Process.process##argv in
-  let name = args 2 in 
-  let password = args 3 in
-  name, password
+  let default = Config.config##default in
+  default##name, default##password
 
 let doReservation jsDate mode = ParkingAvast.doReservation jsDate mode name password
 
@@ -99,7 +97,7 @@ let handle mkNow _next req res: Express.complete Js.Promise.t =
       begin match Express.Request.httpMethod req with
         | Express.Request.Post ->
           let now = mkNow () in
-          let after2Days = Days.plusDays now 2 in
+          let after2Days = Days.plusDays now 0 in
           let%bind sdr = shouldDoCronReservation after2Days in
           let%map _reservationResult = 
             if sdr then
