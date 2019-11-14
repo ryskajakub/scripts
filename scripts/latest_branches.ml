@@ -27,12 +27,9 @@ let () =
 
   ignore @@ noecho () ;
 
-  let branches = ref "" in
-  let latest_branches = run "git" ["branch" ; "--sort=-committerdate"] |- read_all >>| 
-    fun output -> branches := output
-  in 
-  eval latest_branches ;
-  let list: (string list) = Base.String.split_lines !branches in
+  let latest_branches = eval ( run "git" ["branch" ; "--sort=-committerdate"] |- read_all ) in
+
+  let list: (string list) = Base.String.split_lines latest_branches in
   let current_condition = fun e -> String.get e 0 = '*' in
   let lines = PList.filter ( fun e -> not @@ current_condition e ) list in
   let current = PList.filter current_condition list |> PList.hd in
