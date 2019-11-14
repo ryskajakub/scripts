@@ -29,10 +29,13 @@ let () =
 
   let latest_branches = eval ( run "git" ["branch" ; "--sort=-committerdate"] |- read_all ) in
 
-  let list: (string list) = Base.String.split_lines latest_branches in
+  let list: (string list) = Base.String.split_lines latest_branches |> Base.Fn.flip Base.List.take @@ 20 in
   let current_condition = fun e -> String.get e 0 = '*' in
-  let lines = PList.filter ( fun e -> not @@ current_condition e ) list in
-  let current = PList.filter current_condition list |> PList.hd in
+
+  let drop2 string = String.sub string 2 (String.length string - 2) in
+
+  let lines = PList.filter ( fun e -> not @@ current_condition e ) list |> PList.map drop2 in
+  let current = PList.filter current_condition list |> PList.map drop2 |> PList.hd in
 
   let up_down_move ?(start_line: unit option) =
     let y, x = getyx window in
@@ -48,8 +51,10 @@ let () =
         else ()
   in
 
-  ignore @@ addstr current ; ignore @@ up_down_move ~start_line:() `Down ;
-  PList.iter (fun line -> ignore @@ addstr line ; ignore @@ up_down_move ~start_line:() `Down ) lines ;
+  let print_line line = ignore @@ addstr @@ "  " ^ line ; ignore @@ up_down_move ~start_line:() `Down in
+
+  print_line current ;
+  PList.iter print_line lines ;
   ignore @@ move 0 0 ;
 
   ignore @@ addstr "*" ;
@@ -84,7 +89,7 @@ let () =
   if cursor_y == 0
     then ()
     else begin  
-      let selected_branch = PList.nth lines (cursor_y - 1) |> String.trim in
+      let selected_branch = PList.nth lines (cursor_y - 1) in
       eval (run "git" [ "checkout" ; selected_branch ]) ;
     end 
   ;
