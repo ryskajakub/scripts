@@ -61,6 +61,7 @@ let doReservation date (mode: mode): bool Js.Promise.t =
     let%bind passwordNext = FrameBase.waitForXPath page ~xpath:"//div[contains(@id, 'passwordNext')]" () in
     let%bind _ = waitPromise 10000 in
     let%bind _ = ElementHandle.click passwordNext () in
+    let%bind _ = waitPromise 20000 in
     let dtb = dayOfWeek in
     let buttonXPath = "//button[contains(@class, '" ^ firstButtonClass ^ "') and contains(., '" ^ dtb ^ "')]" in
     let%bind _ = Page.screenshot page ~options:(Screenshot.makeOptions ~path:"./screenshot.png" ()) () in
