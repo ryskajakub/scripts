@@ -94,4 +94,4 @@ let doReservation date (mode: mode): bool Js.Promise.t =
   
   promise |> Js.Promise.catch (fun e -> Js.log e ; Js.Promise.resolve false)
 
-let () = ignore @@ doReservation (Js.Date.make ()) MakeReservation
+(* let () = ignore @@ doReservation (Js.Date.make ()) MakeReservation *)
