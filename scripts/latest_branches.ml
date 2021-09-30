@@ -29,7 +29,7 @@ let () =
 
   let latest_branches = eval ( run "git" ["branch" ; "--sort=-committerdate"] |- read_all ) in
 
-  let list: (string list) = Base.String.split_lines latest_branches |> Base.Fn.flip Base.List.take @@ 20 in
+  let list: (string list) = Base.String.split_lines latest_branches |> Base.Fn.flip Base.List.take @@ 50 in
   let current_condition = fun e -> String.get e 0 = '*' in
 
   let drop2 string = String.sub string 2 (String.length string - 2) in
