@@ -7,3 +7,4 @@ git checkout $TARGET_BRANCH
 while result=$(git log -1 --oneline | grep " $BRANCH " | wc -l) && [ $result -eq 0 ] ; do
 	git pull
 done
+git log -1
